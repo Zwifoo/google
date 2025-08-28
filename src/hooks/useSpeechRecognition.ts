@@ -8,7 +8,7 @@ import {
   extractKeyword,
   debounce
 } from '@/lib/speech-utils-fixed';
-import { STT_CONFIG, DEBOUNCE_MS, UI_CONFIG } from '@/config/triggers';
+import { STT_CONFIG, DEBOUNCE_MS } from '@/config/triggers';
 import type { SpeechRecognition, SpeechRecognitionEvent } from '@/types/speech';
 
 // Mobile detection helper
@@ -27,7 +27,6 @@ export function useSpeechRecognition() {
     setTranscript,
     setInterimTranscript,
     setDetectedKeyword,
-    setShowConfirmation,
     setError,
     confirmSearch
   } = useMagicSearchStore();
@@ -50,14 +49,8 @@ export function useSpeechRecognition() {
         text: keyword,
         timestamp: new Date()
       });
-      setShowConfirmation(true);
       
-      // Auto-confirm after timeout
-      setTimeout(() => {
-        if (useMagicSearchStore.getState().showConfirmation) {
-          confirmSearch(keyword);
-        }
-      }, UI_CONFIG.confirmTimeout);
+      confirmSearch(keyword);
       
     }, 150)
   );
