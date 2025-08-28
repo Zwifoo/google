@@ -61,7 +61,7 @@ export default function MagicSearchApp() {
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
-              Magic Search
+              Search
             </h1>
             <p className="text-sm text-purple-300">Pencarian Ajaib Indonesia</p>
           </div>
@@ -158,3 +158,4 @@ export default function MagicSearchApp() {
     </div>
   );
 }
+
