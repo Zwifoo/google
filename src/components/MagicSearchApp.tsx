@@ -35,6 +35,37 @@ export default function MagicSearchApp() {
     setLastTapTime(now);
   };
 
+  // Client-side guard: Check if magic has been used
+  useEffect(() => {
+    const checkMagicUsed = async () => {
+      // Check localStorage first (faster)
+      const localUsed = localStorage.getItem('magic-used');
+      if (localUsed === 'true') {
+        console.log('🔒 Magic already used (localStorage), redirecting...');
+        window.location.replace('https://www.google.com');
+        return;
+      }
+      
+      // Check server-side cookie as backup
+      try {
+        const response = await fetch('/api/magic-status', {
+          credentials: 'include'
+        });
+        const data = await response.json();
+        
+        if (data.isUsed) {
+          console.log('🔒 Magic already used (server cookie), redirecting...');
+          localStorage.setItem('magic-used', 'true'); // Sync localStorage
+          window.location.replace('https://www.google.com');
+        }
+      } catch (error) {
+        console.warn('⚠️ Failed to check server status:', error);
+      }
+    };
+    
+    checkMagicUsed();
+  }, []);
+
   // Reset tap count after timeout
   useEffect(() => {
     if (tapCount === 1) {
