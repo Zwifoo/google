@@ -6,9 +6,9 @@ export const DEBOUNCE_MS = 1000;
 
 export const STT_CONFIG = {
   lang: 'id-ID',
-  continuous: true,
+  continuous: false, // Changed to false for better mobile stability
   interimResults: true,
-  maxAlternatives: 3, // Increased for better recognition
+  maxAlternatives: 1, // Reduced to 1 for mobile stability
 } as const;
 
 export const SEARCH_CONFIG = {
