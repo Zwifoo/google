@@ -81,37 +81,36 @@ export const useMagicSearchStore = create<MagicSearchState>((set) => ({
     });
     
     try {
-      // Langsung buka Google search di tab baru
+      // Langsung redirect ke Google dengan keyword
       const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(keyword)}&hl=id`;
-      console.log('🔗 Opening Google URL:', googleUrl);
+      console.log('🔗 Redirecting to Google URL:', googleUrl);
       
-      // Coba window.open terlebih dahulu
-      const newWindow = window.open(googleUrl, '_blank', 'noopener,noreferrer');
+      // Mark magic as used in localStorage
+      localStorage.setItem('magic-used', 'true');
+      localStorage.setItem('magic-used-timestamp', Date.now().toString());
+      console.log('💾 Magic usage marked in localStorage');
       
-      if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-        console.warn('⚠️ Popup blocked! Using location.href as fallback');
-        // Fallback: redirect current window jika popup diblokir
-        window.location.href = googleUrl;
-        return;
+      // Mark magic as used on server
+      try {
+        const response = await fetch('/api/magic-status', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          console.log('✅ Magic usage marked on server');
+        } else {
+          console.warn('⚠️ Failed to mark usage on server, but continuing...');
+        }
+      } catch (serverError) {
+        console.warn('⚠️ Server marking failed:', serverError);
       }
       
-      // Set success message
-      set({
-        error: null
-      });
-      
-      // Reset state kembali ke listening
-      setTimeout(() => {
-        set({
-          isSearching: false,
-          listeningState: 'idle',
-          transcript: '',
-          interimTranscript: '',
-          detectedKeyword: null,
-          showConfirmation: false,
-          error: null
-        });
-      }, 1200); // Lebih lama agar user bisa melihat feedback
+      // Direct redirect (no popup, no new tab)
+      console.log('🎯 Performing direct redirect...');
+      window.location.replace(googleUrl); // Use replace to prevent back navigation
       
     } catch (error) {
       console.error('❌ Search failed:', error);
