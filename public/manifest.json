@@ -1,0 +1,48 @@
+{
+  "name": "Magic Search - Pencarian Ajaib",
+  "short_name": "Magic Search",
+  "description": "Aplikasi pencarian ajaib dengan teknologi Speech Recognition untuk bahasa Indonesia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e1b4b",
+  "theme_color": "#8b5cf6",
+  "orientation": "portrait-primary",
+  "categories": ["utilities", "productivity"],
+  "lang": "id",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Mulai Pencarian",
+      "short_name": "Search",
+      "description": "Mulai pencarian suara langsung",
+      "url": "/?action=start",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot1.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}
