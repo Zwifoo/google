@@ -158,7 +158,7 @@ export function extractKeyword(text: string, triggers = TRIGGERS): string | null
       // 2. Not a very common stop word (reduced list)
       // 3. Length > 1 to avoid single letters
       return word.length > 1 && 
-             !/^(yang|tadi|dan|saya|aku|gue|lu|kamu|dia|mereka|kita|anda|beliau|coba|atau|percaya|gak|nggak|enggak|dari|ke|di|pada|untuk|dengan|oleh|akan|sudah|belum|ini|itu|sama|juga|biar|kalau|kalo|apa|siapa|kapan|dimana|kenapa|bagaimana|gimana|nih|deh|dong|kok|sih|kan|ya|lah|loh|toh|nah|oke|okeh|hmm|pasti|betul|bener|iya|tidak|mungkin|tapi|lalu|kemudian|terus|karena|sehingga|supaya|agar|namun|walaupun|maupun|meskipun|jadi|sekarang|nanti|besok|kemarin|barusan)$/.test(word);
+             !/^(warna|berwarna|yang|tadi|dan|saya|aku|gue|lu|kamu|dia|mereka|kita|anda|beliau|coba|atau|percaya|gak|nggak|enggak|dari|ke|di|pada|untuk|dengan|oleh|akan|sudah|belum|ini|itu|sama|juga|biar|kalau|kalo|apa|siapa|kapan|dimana|kenapa|bagaimana|gimana|nih|deh|dong|kok|sih|kan|ya|lah|loh|toh|nah|oke|okeh|hmm|pasti|betul|bener|iya|tidak|mungkin|tapi|lalu|kemudian|terus|karena|sehingga|supaya|agar|namun|walaupun|maupun|meskipun|jadi|sekarang|nanti|besok|kemarin|barusan)$/.test(word);
     });
   
   
@@ -233,3 +233,4 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
   
   return debouncedFunc;
 }
+
