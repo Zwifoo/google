@@ -147,20 +147,19 @@ export function extractKeyword(text: string, triggers = TRIGGERS): string | null
   
   console.log('🧹 After particle removal:', afterTrigger);
   
-  // Clean and preserve meaningful multi-word phrases
-  const words = afterTrigger
-    .replace(/\s+/g, ' ')
-    .trim()
-    .split(' ')
-    .filter(word => {
-      // Keep word if:
-      // 1. Not empty
-      // 2. Not a very common stop word (reduced list)
-      // 3. Length > 1 to avoid single letters
-      return word.length > 1 && 
-             !/^(warna|berwarna|yang|tadi|dan|saya|aku|gue|lu|kamu|dia|mereka|kita|anda|beliau|coba|atau|percaya|gak|nggak|enggak|dari|ke|di|pada|untuk|dengan|oleh|akan|sudah|belum|ini|itu|sama|juga|biar|kalau|kalo|apa|siapa|kapan|dimana|kenapa|bagaimana|gimana|nih|deh|dong|kok|sih|kan|ya|lah|loh|toh|nah|oke|okeh|hmm|pasti|betul|bener|iya|tidak|mungkin|tapi|lalu|kemudian|terus|karena|sehingga|supaya|agar|namun|walaupun|maupun|meskipun|jadi|sekarang|nanti|besok|kemarin|barusan)$/.test(word);
-    });
-  
+const COMMON_ID_STOPWORDS_REGEX = /^(?:warna|berwarna|yang|tadi|dan|saya|aku|gue|gua|gw|gua|lo|lu|kamu|anda|dia|ia|mereka|kita|kami|kalian|beliau|coba|atau|percaya|gak|ga|nggak|ngga|enggak|ndak|nda|tak|bukan|bukannya|ada|adalah|dari|ke|di|pada|untuk|dengan|tanpa|dalam|kepada|terhadap|tentang|seperti|sebagai|hingga|sampai|guna|oleh|akan|telah|sudah|udah|belum|lagi|sedang|ini|itu|sama|juga|biar|agar|supaya|kalau|kalo|apabila|jika|apa|siapa|kapan|dimana|di mana|kenapa|mengapa|bagaimana|gimana|yang mana|nih|tuh|deh|dong|kok|sih|kan|kah|lah|pun|toh|nah|ya|yah|iye|iya|oke|okeh|ok|okey|hmm|hmmm|eh|aduh|waduh|astaga|yaampun|ya ampun|wkwk|haha|hehe|hihi|pasti|betul|bener|mungkin|tapi|tetapi|namun|sedangkan|sementara|lalu|kemudian|terus|lantas|bahkan|apalagi|sehingga|makanya|jadinya|jadi|intinya|pokoknya|sebenarnya|sebenernya|sejujurnya|jujur|kayak|kayaknya|sepertinya|mirip|macam|semacam|hanya|cuma|cuman|saja|aja|doang|sekadar|sekedar|hampir|baru|barusan|tadi|tadinya|dulu|sekarang|kini|nanti|besok|lusa|kemarin|minggu|bulan|tahun|sering|kadang|kadang-kadang|biasanya|pernah|boleh|bisa|dapat|harus|wajib|perlu|mesti|kudu|ingin|pengen|mau|bakal|akan|bentar|sebentar|tolong|maaf|permisi|terimakasih|terima kasih|makasih|silakan|yaudah|ywdh|gini|gitu|begini|begitu|sama aja|aja sih|aja dong|doang sih|dong deh|please)$|^(?:-(?:lah|kah|pun|nya|ku|mu))$/i;
+
+const words = afterTrigger
+  .replace(/\s+/g, ' ')
+  .trim()
+  .split(' ')
+  .map(w => w.replace(/[^\p{L}\p{N}-]+/gu, '')) // buang tanda baca
+  .map(w => w.replace(/^(?:si|sang)$/i, ''))     // determiner umum
+  .map(w => w.replace(/(nya|lah|kah|pun|ku|mu)$/i, '')) // buang enklitik umum
+  .filter(word => {
+    return word.length > 1 && !COMMON_ID_STOPWORDS_REGEX.test(word);
+  });
+
   
   // Take up to MAX_KEYWORD_TOKENS words and join them
   const candidate = words
@@ -233,4 +232,5 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
   
   return debouncedFunc;
 }
+
 
